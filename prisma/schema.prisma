@@ -1,0 +1,32 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["multiSchema"]
+}
+
+datasource db {
+  provider = "postgresql"
+  schemas  = ["movie_prisma"]
+}
+
+model Director {
+  id     Int     @id @default(autoincrement())
+  name   String
+  movies Movie[]
+
+  @@schema("movie_prisma")
+}
+
+model Movie {
+  id         Int      @id @default(autoincrement())
+  title      String
+  revenue    Float
+  directorId Int
+  director   Director @relation(fields: [directorId], references: [id])
+
+  @@schema("movie_prisma")
+}
+
+
