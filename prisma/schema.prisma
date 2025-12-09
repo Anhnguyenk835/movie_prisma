@@ -23,6 +23,7 @@ model Movie {
   directorId Int
   director   Director @relation(fields: [directorId], references: [id])
   reviews    Review[]
+  movieActors MovieActor[]
 
   @@schema("movie_prisma")
 }
@@ -46,5 +47,24 @@ model Review {
   movie     Movie    @relation(fields: [movieId], references: [id])
   user      User     @relation(fields: [userId], references: [id])
 
+  @@schema("movie_prisma")
+}
+
+model Actor {
+  id          Int          @id @default(autoincrement())
+  name        String
+  movieActors MovieActor[]
+
+
+  @@schema("movie_prisma")
+}
+
+model MovieActor {
+  movieId Int
+  actorId Int
+  movie   Movie @relation(fields: [movieId], references: [id], onDelete: Cascade)
+  actor   Actor @relation(fields: [actorId], references: [id], onDelete: Cascade)
+  
+  @@id([movieId, actorId])
   @@schema("movie_prisma")
 }
