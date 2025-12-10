@@ -9,6 +9,7 @@ import directorRoutes from "./src/routes/directorRoutes.js";
 import movieRoutes from "./src/routes/movieRoutes.js";
 import userRoutes from "./src/routes/userRoutes.js";
 import reviewRoutes from "./src/routes/reviewRoutes.js";
+import actorRoutes from "./src/routes/actorRoutes.js";
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -22,6 +23,7 @@ app.use("/directors", directorRoutes);
 app.use("/movies", movieRoutes);
 app.use("/users", userRoutes);
 app.use("/reviews", reviewRoutes);
+app.use("/actors", actorRoutes);
 
 // Test route
 app.get("/", (req, res) => {
