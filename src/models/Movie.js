@@ -5,10 +5,20 @@ class Movie {
     return prisma.movie.create({ data });
   }
 
-  static async findAll() {
+  static async findAll(options = {}) {
+    const { where, orderBy, skip, take } = options;
+
     return prisma.movie.findMany({
+      where,
+      orderBy,
+      skip,
+      take,
       include: { director: true },
     });
+  }
+
+  static async count(where = {}) {
+    return prisma.movie.count({ where });
   }
 
   static async update(id, data) {
