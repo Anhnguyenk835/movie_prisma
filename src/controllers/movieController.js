@@ -1,4 +1,5 @@
 import Movie from "../models/Movie.js";
+import prisma from "../prismaClient.js";
 
 const createMovie = async (req, res) => {
   try {
@@ -47,4 +48,35 @@ const deleteMovie = async (req, res) => {
   }
 };
 
-export { createMovie, getMovies, updateMovie, deleteMovie };
+// Tính điểm trung bình review cho 1 phim
+const getMovieScore = async (req, res) => {
+  try {
+    const movieId = parseInt(req.params.id);
+    const result = await prisma.review.aggregate({
+      where: { movieId },
+      _avg: { rating: true },
+      _count: true,
+    });
+
+    if (result._count === 0) {
+      return res
+        .status(404)
+        .json({ error: `Movie ${movieId} has no reviews yet` });
+    }
+
+    res.json({
+      movieId,
+      averageRating: result._avg.rating,
+      reviewCount: result._count,
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({
+        error: "Failed to calculate movie score",
+        details: error.message,
+      });
+  }
+};
+
+export { createMovie, getMovies, updateMovie, deleteMovie, getMovieScore };
