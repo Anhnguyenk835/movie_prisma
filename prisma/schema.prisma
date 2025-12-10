@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["multiSchema"]
@@ -25,8 +22,49 @@ model Movie {
   revenue    Float
   directorId Int
   director   Director @relation(fields: [directorId], references: [id])
+  reviews    Review[]
+  movieActors MovieActor[]
 
   @@schema("movie_prisma")
 }
 
+model User {
+  id      Int      @id @default(autoincrement())
+  email   String   @unique
+  name    String?
+  reviews Review[]
 
+  @@schema("movie_prisma")
+}
+
+model Review {
+  id        Int      @id @default(autoincrement())
+  rating    Int
+  content   String?
+  createdAt DateTime @default(now())
+  movieId   Int
+  userId    Int
+  movie     Movie    @relation(fields: [movieId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@schema("movie_prisma")
+}
+
+model Actor {
+  id          Int          @id @default(autoincrement())
+  name        String
+  movieActors MovieActor[]
+
+
+  @@schema("movie_prisma")
+}
+
+model MovieActor {
+  movieId Int
+  actorId Int
+  movie   Movie @relation(fields: [movieId], references: [id], onDelete: Cascade)
+  actor   Actor @relation(fields: [actorId], references: [id], onDelete: Cascade)
+  
+  @@id([movieId, actorId])
+  @@schema("movie_prisma")
+}
