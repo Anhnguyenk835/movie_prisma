@@ -2,7 +2,6 @@
 mkdir movie_prisma_orm
 cd movie_prisma_orm
 
-
 # 2. init nodejs
 npm init -y
 
