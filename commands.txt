@@ -1,0 +1,39 @@
+# 1. create project
+mkdir movie_prisma_orm
+cd movie_prisma_orm
+
+
+# 2. init nodejs
+npm init -y
+
+# 3. Install required packages
+# Core dependencies
+npm install express @prisma/client dotenv cors body-parser
+
+# Dev dependencies
+npm install -D prisma nodemon
+
+# 4. Init Prisma
+npx prisma init --datasource-provider postgresql
+
+# 5. Config env
+DATABASE_URL="postgresql://username:password@localhost:5432/database_name?schema=public"
+PORT=3000
+
+# 6. Define prisma schema
+prisma/schema.prisma
+
+# 7. Generate Prisma Client
+npx prisma generate
+
+# 8. Create database
+npx prisma migrate dev --name init
+
+# 9. Push schema
+npx prisma db push
+
+# 10. Create server
+mkdir -p src/models src/controllers src/routes
+cd src
+touch prismaClient.js
+
